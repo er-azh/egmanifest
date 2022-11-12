@@ -56,6 +56,21 @@ const (
 	EFeatureLevelInvalid = -1
 )
 
+// ChunkSubDir returns the chunk version sub directory
+//
+// source: https://github.com/EpicGames/UnrealEngine/blob/d9d435c9c280b99a6c679b517adedd3f4b02cfd7/Engine/Source/Runtime/Online/BuildPatchServices/Private/Data/ManifestData.cpp#L77
+func (e EFeatureLevel) ChunkSubDir() string {
+	if e < EFeatureLevelDataFileRenames {
+		return "Chunks"
+	} else if e < EFeatureLevelChunkCompressionSupport {
+		return "ChunksV2"
+	} else if e < EFeatureLevelVariableSizeChunksWithoutWindowSizeChunkInfo {
+		return "ChunksV3"
+	}
+
+	return "ChunksV4"
+}
+
 const (
 	StoredCompressed uint8 = 0x01
 	StoredEncrypted  uint8 = 0x02
